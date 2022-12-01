@@ -220,7 +220,7 @@ void ndi_input::ndi_video_thread()
 
 void ndi_input::ndi_audio_thread()
 {
-	NDIlib_audio_frame_v3_t ndi_audio_frame;
+	NDIlib_audio_frame_v2_t ndi_audio_frame;
 	obs_source_audio obs_audio_frame = {};
 
 	while (running) {
@@ -229,13 +229,13 @@ void ndi_input::ndi_audio_thread()
 			continue;
 		}
 
-		if (ndiLib->recv_capture_v3(ndi_recv, nullptr, &ndi_audio_frame, nullptr, 50) != NDIlib_frame_type_audio)
+		if (ndiLib->recv_capture_v2(ndi_recv, nullptr, &ndi_audio_frame, nullptr, 50) != NDIlib_frame_type_audio)
 			continue;
 
 		// Reports seem to suggest that NDI can provide audio without timestamps.
 		if (!ndi_audio_frame.timestamp || ndi_audio_frame.timestamp == NDIlib_recv_timestamp_undefined) {
 			do_log(LOG_WARNING, "[ndi_input::ndi_audio_thread] Missing timestamp from NDI!");
-			ndiLib->recv_free_audio_v3(ndi_recv, &ndi_audio_frame);
+			ndiLib->recv_free_audio_v2(ndi_recv, &ndi_audio_frame);
 			continue;
 		}
 
@@ -252,7 +252,7 @@ void ndi_input::ndi_audio_thread()
 
 		obs_source_output_audio(source, &obs_audio_frame);
 
-		ndiLib->recv_free_audio_v3(ndi_recv, &ndi_audio_frame);
+		ndiLib->recv_free_audio_v2(ndi_recv, &ndi_audio_frame);
 	}
 }
 
