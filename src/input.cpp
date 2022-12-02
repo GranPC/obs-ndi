@@ -251,7 +251,7 @@ void ndi_input::ndi_audio_thread()
 		for (size_t i = 0; i < channel_count; ++i)
 		{
 			obs_audio_frame.data[i] = (uint8_t *)(&ndi_audio_frame.p_data[i * ndi_audio_frame.channel_stride_in_bytes]);
-			if ( i != 0 )
+			/* if ( i != 0 )
 			{
 				printf("Channel %ld: ", i);
 				for (int j = 0; j < ndi_audio_frame.no_samples; j++)
@@ -259,7 +259,7 @@ void ndi_input::ndi_audio_thread()
 					printf("%x ", obs_audio_frame.data[i][j]);
 				}
 				printf("\n\n----------------\n\n");
-			}
+			} */
 		}
 
 		obs_source_output_audio(source, &obs_audio_frame);
